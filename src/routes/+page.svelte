@@ -1,2 +1,8 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="grid place-content-center">
+	<h1 class="text-3xl font-bold underline">App Landing Page</h1>
+	<div class="flex flex-row justify-center gap-5">
+		<a href="/layout">Layout</a>
+		<a href="/chart">Chart</a>
+		<a href="/map">Map</a>
+	</div>
+</div>
