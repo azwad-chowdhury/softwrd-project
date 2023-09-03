@@ -1,1 +1,10 @@
-<h1 class="text-3xl font-bold">Chart Page!</h1>
+<script>
+	import { countryDataStore } from '../../stores/countryDataStore';
+
+	var countries = [];
+	countryDataStore.subscribe((value) => {
+		countries = value;
+	});
+</script>
+
+<h1>Chart Page</h1>
