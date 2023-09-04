@@ -2,6 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* table */
+.table {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	border-radius: 15px;
+}
+td {
+	font-size: 14px;
+	font-weight: 500;
+}
+.table .member-tag {
+	padding: 5px 8px;
+	width: fit-content;
+	font-size: 14px;
+	color: white;
+	border-radius: 5px;
+}
+.table .member-tag.yes {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+.table .member-tag.no {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.header {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 15px !important;
+}
+.table td {
+	border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+.pagination-button {
+	width: fit-content;
+	border: 1px solid rgba(0, 0, 0, 0.4);
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+/* figure */
 .outer-square {
 	display: grid;
 	place-content: center;
