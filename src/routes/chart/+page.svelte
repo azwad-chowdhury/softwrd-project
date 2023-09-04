@@ -12,18 +12,17 @@
 	let countriesForSort = [];
 	let mostPopulatedCountries = [];
 
-	countryDataStore.subscribe((value) => {
-		countries = value;
-		countriesForSort = [...value]; //making a copy for original value
-		mostPopulatedCountries = countriesForSort
-			.sort((a, b) => b.population - a.population)
-			.slice(0, 10);
-		updateupdateCountries();
-	});
-
 	onMount(() => {
 		updateupdateCountries();
 		createPolarChart();
+		countryDataStore.subscribe((value) => {
+			countries = value;
+			countriesForSort = [...value]; //making a copy for original value
+			mostPopulatedCountries = countriesForSort
+				.sort((a, b) => b.population - a.population)
+				.slice(0, 10);
+			updateupdateCountries();
+		});
 	});
 
 	// updating countries on each time indexing
