@@ -3,19 +3,27 @@
 
 	import { countryDataStore } from '../../stores/countryDataStore';
 	import { onMount } from 'svelte';
+	import Chart from 'chart.js/auto';
 
 	let currentPage = 1;
 	const countriesPerPage = 10;
 	let updatedCountries = [];
 	let countries = [];
+	let countriesForSort = [];
+	let mostPopulatedCountries = [];
 
 	countryDataStore.subscribe((value) => {
 		countries = value;
+		countriesForSort = [...value]; //making a copy for original value
+		mostPopulatedCountries = countriesForSort
+			.sort((a, b) => b.population - a.population)
+			.slice(0, 10);
 		updateupdateCountries();
 	});
 
 	onMount(() => {
 		updateupdateCountries();
+		createPolarChart();
 	});
 
 	// updating countries on each time indexing
@@ -38,6 +46,52 @@
 			currentPage -= 1;
 			updateupdateCountries();
 		}
+	}
+
+	// polar area function
+	function createPolarChart() {
+		if (mostPopulatedCountries.length === 0) {
+			return;
+		}
+
+		const labels = mostPopulatedCountries.map((country) => country.name.common);
+		const data = mostPopulatedCountries.map((country) => country.population);
+		const ctx = document.getElementById('polarAreaChart').getContext('2d');
+
+		new Chart(ctx, {
+			type: 'polarArea',
+			data: {
+				labels: labels,
+				datasets: [
+					{
+						data: data,
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.6)',
+							'rgba(54, 162, 235, 0.6)',
+							'rgba(255, 206, 86, 0.6)',
+							'rgba(75, 192, 192, 0.6)',
+							'rgba(153, 102, 255, 0.6)',
+							'rgba(255, 159, 64, 0.6)',
+							'rgba(255, 99, 132, 0.6)',
+							'rgba(54, 162, 235, 0.6)',
+							'rgba(255, 206, 86, 0.6)',
+							'rgba(75, 192, 192, 0.6)'
+						]
+					}
+				]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				legend: {
+					display: false
+				},
+				title: {
+					display: true,
+					text: 'Top 10 Most Populated Countries'
+				}
+			}
+		});
 	}
 </script>
 
@@ -109,18 +163,32 @@
 					</tbody>
 				</table>
 			</div>
+			<div class="pagination" style="padding: 15px ;">
+				<button on:click={prevPage} disabled={currentPage === 1} class="pagination-button"
+					>Previous</button
+				>
+				<span>Page {currentPage}</span>
+				<button
+					on:click={nextPage}
+					disabled={currentPage === Math.ceil(countries.length / countriesPerPage)}
+					class="pagination-button">Next</button
+				>
+			</div>
 		</div>
-	</div>
 
-	<div class="pagination" style="padding: 15px ;">
-		<button on:click={prevPage} disabled={currentPage === 1} class="pagination-button"
-			>Previous</button
-		>
-		<span>Page {currentPage}</span>
-		<button
-			on:click={nextPage}
-			disabled={currentPage === Math.ceil(countries.length / countriesPerPage)}
-			class="pagination-button">Next</button
-		>
+		<div class="xl:col-span-5 col-span-12 xl:ml-4 ml:0 xl:mt-0 mt-4">
+			<div
+				class="chart-div"
+				style="padding:15px;border:1px solid rgba(0,0,0,0.1);border-radius:15px"
+			>
+				<div class="heading" style="border-bottom: 1px solid rgba(0,0,0,0.1)">
+					<h1 style="font-size: 24px;font-weight:600">Countries</h1>
+				</div>
+
+				<div class="chart-container">
+					<canvas id="polarAreaChart" width="400" height="400" />
+				</div>
+			</div>
+		</div>
 	</div>
 </main>
